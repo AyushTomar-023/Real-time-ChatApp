@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Real-Time chat app</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">    
+</head>
+<body>
+  <div class="wrapper">
+    <section class="form signup">
+      <header>CHAT APPLICATION</header>
+      <form id="signup-form" enctype="multipart/form-data">
+        <div class="error-txt" style="display: none;">This is an error message!</div>
+        <div class="name-details">
+          <div class="field input">
+            <label>First Name</label>
+            <input type="text" placeholder="First Name" name="firstName" required />
+          </div>
+          <div class="field input">
+            <label>Last Name</label>
+            <input type="text" placeholder="Last Name" name="lastName" required />
+          </div>
+        </div>
+        <div class="field input">
+          <label>Email Address</label>
+          <input type="email" placeholder="Enter your email" name="email" required />
+        </div>
+        <div class="field input">
+          <label>Password</label>
+          <input type="password" placeholder="Enter new password" name="password" required />
+          <i class="fa fa-eye"></i>
+        </div>
+        <div class="field image">
+          <label>Select image</label>
+          <input type="file" name="profile_image" accept="image/*" required />
+        </div>
+        <div class="field button">
+          <input type="submit" value="Continue to chat" />
+        </div>
+      </form>
+      <div class="link">Already signed up? <a href="login.html">Login now</a></div>
+    </section>
+  </div>
+
+  <script src="javascript/pass-show-hide.js"></script>
+  <script>
+    document.getElementById("signup-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const formData = new FormData(form);
+      const email = formData.get('email');
+      const errorElement = document.querySelector(".error-txt");
+
+      try {
+        const checkRes = await fetch(`http://127.0.0.1:5000/api/auth/check-email?email=${encodeURIComponent(email)}`);
+        const checkData = await checkRes.json();
+
+        if (!checkRes.ok || checkData.exists) {
+          errorElement.textContent = "Email already registered!";
+          errorElement.style.display = "block";
+          errorElement.style.color = "red";
+          return;
+        }
+
+        const signupRes = await fetch(`http://127.0.0.1:5000/api/auth/signup`, {
+          method: "POST",
+          body: formData
+        });
+
+        const signupData = await signupRes.json();
+
+        if (signupRes.ok) {
+          window.location.href = "login.html"; // Redirect to login page
+        } else {
+          errorElement.textContent = signupData.message || "Signup failed";
+          errorElement.style.display = "block";
+          errorElement.style.color = "red";
+        }
+
+      } catch (err) {
+        console.error("Error:", err);
+        errorElement.textContent = "Network error occurred";
+        errorElement.style.display = "block";
+        errorElement.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>

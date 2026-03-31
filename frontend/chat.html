@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat | Chat App</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+<body>
+  <div class="wrapper">
+    <section class="chat-area">
+      <header>
+        <a href="user.html" class="back-icon"><i class="fa fa-arrow-left"></i></a>
+        <img id="chatUserImage" src="img.jpg" alt="User Image" />
+        <div class="details">
+          <span id="chatUserName">Loading...</span>
+        </div>
+      </header>
+
+      <!-- Chat messages will go here -->
+      <div class="chat-box" id="messagesContainer">
+        <!-- Messages will be dynamically inserted here -->            
+      </div>
+
+      <!-- Message input form -->
+      <form class="typing-area" id="messageForm">
+        <input type="text" id="messageInput" placeholder="Type a message here..." autocomplete="off" />
+        <button type="submit"><i class="fa fa-paper-plane"></i></button>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <script src="./javascript/chat.js"></script>
+</body>
+</html>

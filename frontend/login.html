@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Chat App</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <section class="form login">
+      <header>Login</header>
+      <form id="loginForm">
+        <div class="error-text" id="errorText"></div>
+        <div class="field input">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="field input">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <div class="field button">
+          <input type="submit" value="Login">
+        </div>
+      </form>
+      <div class="link">Not yet signed up? <a href="signup.html">Signup now</a></div>
+    </section>
+  </div>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+    
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+    
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+    
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Login successful!");
+          localStorage.setItem("chat_token", data.token);
+          localStorage.setItem("userId", data.user.id);
+          window.location.href = "user.html";
+        }
+          
+        else {
+          document.getElementById("errorText").textContent = "";
+        }
+      } catch (err) {
+        alert("Something went wrong!");
+        console.error(err);
+      }
+    });
+    </script>    
+</body>
+</html>
