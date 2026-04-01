@@ -81,7 +81,8 @@ npm start  or node server.js
 - Socket.IO handles real-time communication between users  
 - When a message is sent:
   - It is stored in the database
-  - Instantly delivered to the recipient via WebSocket  
+  - Instantly delivered to the recipient via WebSocket
+  - This project has been tested to run locally on the computer
 ---
 
 ## 👨‍💻 My Contribution
